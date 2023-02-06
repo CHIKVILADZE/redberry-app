@@ -1,13 +1,195 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+*{
+  margin:0;
+  padding:0;
+  box-sizing: border-box;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+form{
+  display:flex;
+  flex-direction: column;
+  
+}
+
+.namesurname{
+  display:flex;
+  flex-direction: row;
+  gap:8px;
+  margin-top:77px;
+  margin-left:126px;
+}
+.name, .surname{
+  width:419px;
+  height:122px;
+  border:1px solid black;
+  display:flex;
+  flex-direction: column;
+  gap:8px;
+  padding-left:24px;
+}
+label{
+  font-family: 'Helvetica Neue';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 21px;
+  display: flex;
+  align-items: center;
+    color: #000000;
+}
+span{
+  font-family: 'Helvetica Neue';
+  font-style: normal;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 21px;
+  display: flex;
+  align-items: center;
+  color: #2E2E2E;
+  }
+
+
+
+.nameinput, .surnameinput{
+  width:371px;
+  height:48px;
+  border-radius:4px;
+  border:1px solid #BCBCBC;
+}
+::placeholder{
+  font-family: 'Helvetica Neue';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 21px;
+  display: flex;
+  align-items: center;
+  color: rgba(0, 0, 0, 0.6);
+  
+
+}
+
+.uploadlabel {
+  width: 107px;
+  height: 27px;
+  margin-left:19px;
+  display:flex;
+  justify-content: center;
+  background: #0E80BF;
+  border-radius: 4px;
+  font-family: 'Helvetica Neue';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #FFFFFF;
+ }
+
+.upload{
+
+  display: none;
+}
+textarea{
+  width:798px;
+  height:103px;
+  resize:none;
+}
+.email, .mobile{
+  width:798px;
+  height:48px;
+  background-color:  #FFFFFF;
+  padding-left:16px;
+  border:1px solid #BCBCBC;
+}
+
+
+             /* Experience */
+ .position, .employer{
+  width:798px;
+  height:48px;
+  padding-left:16px;
+ }     
+ 
+ .date{
+  width:371px;
+  height:48px;
+  border-radius:4px;
+  padding-left:16px;
+  padding-right:16px;
+ }
+ .description-text{
+  width:798px;
+  height:123px;
+  resize:none;
+  padding-left:16px;
+  padding-top:13px;
+ }
+
+ .add{
+  width:289px;
+  height:48px;
+  background-color:#62A1EB;
+  border-radius:4px;
+  font-family: 'Helvetica Neue';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  color: #FFFFFF;
+  border:none;
+  margin-top:45px;
+  margin-left:149px;
+ }
+ 
+ .BtnBox{
+  display:flex;
+  flex-direction: row;
+  width:75%;
+  height:48px;
+ 
+  margin-left:150px;
+  margin-top:100px;
+  justify-content: space-between;
+ }
+
+ .Btnback {
+  width:113px;
+  height:48px;
+  background-color: #6B40E3;
+  border:none;
+  font-family: 'Helvetica Neue';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0.08em;
+  color: #FFFFFF;
+  border-radius:4px;
+ }
+
+ .Btn{
+  width:151px;
+  height:48px;
+  background-color: #6B40E3;
+  border:none;
+  font-family: 'Helvetica Neue';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0.08em;
+  color: #FFFFFF;
+  border-radius:4px;
+
+ }
+
+            /* EDucation */
+.school{
+  width:798px;
+  height:48px;
+  padding-left:16px;
+}
+
+select{
+  width:371px;
+  height:48px;
 }
