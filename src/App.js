@@ -4,7 +4,6 @@ import PrivateInfo from './components/PrivateInfo';
 import Experience from './components/Experience';
 import Education from './components/Education';
 
-
 function App() {
   return (
     <div className="App">
