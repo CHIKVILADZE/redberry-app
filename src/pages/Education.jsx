@@ -32,7 +32,7 @@ export default function Education() {
     <Main>
       <Edu>
       <Header>
-          <Button><Link to="/" style={{color:"white", textDecoration:"none"}}><img src={back}/></Link></Button>
+          <Button><Link to="/redberry-app" style={{color:"white", textDecoration:"none"}}><img src={back}/></Link></Button>
           <Title>განათლება</Title>
           <Pages>3/3</Pages>
         </Header>

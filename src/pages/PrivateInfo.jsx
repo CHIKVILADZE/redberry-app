@@ -40,7 +40,7 @@ export default function PrivateInfo() {
     <Main>
       <Info>
         <Header>
-          <Link to="/" style={{color:"white", textDecoration:"none"}}><Button><img src={back}/></Button></Link>
+          <Link to="/redberry-app" style={{color:"white", textDecoration:"none"}}><Button><img src={back}/></Button></Link>
           <Title>პირადი ინფო</Title>
           <Pages>1/3</Pages>
         </Header>

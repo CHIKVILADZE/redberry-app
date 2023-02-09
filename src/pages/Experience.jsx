@@ -36,7 +36,7 @@ export default function Experience() {
     <Main>
       <Exp>
       <Header>
-          <Button><Link to="/" style={{color:"white", textDecoration:"none"}}><img src={back}/></Link></Button>
+          <Button><Link to="/redberry-app" style={{color:"white", textDecoration:"none"}}><img src={back}/></Link></Button>
           <Title>გამოცდილება</Title>
           <Pages>2/3</Pages>
         </Header>

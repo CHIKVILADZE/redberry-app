@@ -1,7 +1,7 @@
 import React from 'react'
 
 
-export default function resume() {
+export default function Resume() {
   return (
     <div>
      <h1>Resume</h1> 
