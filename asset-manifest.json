@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/redberry-app/static/css/main.7b2bba92.css",
-    "main.js": "/redberry-app/static/js/main.1291c9ff.js",
+    "main.css": "/redberry-app/static/css/main.f9562936.css",
+    "main.js": "/redberry-app/static/js/main.b7713141.js",
     "static/media/background.png": "/redberry-app/static/media/background.aabc97eb9752c47b18ea.png",
     "static/media/ring.png": "/redberry-app/static/media/ring.2909aeade99a6a0d3062.png",
     "index.html": "/redberry-app/index.html",
-    "main.7b2bba92.css.map": "/redberry-app/static/css/main.7b2bba92.css.map",
-    "main.1291c9ff.js.map": "/redberry-app/static/js/main.1291c9ff.js.map"
+    "main.f9562936.css.map": "/redberry-app/static/css/main.f9562936.css.map",
+    "main.b7713141.js.map": "/redberry-app/static/js/main.b7713141.js.map"
   },
   "entrypoints": [
-    "static/css/main.7b2bba92.css",
-    "static/js/main.1291c9ff.js"
+    "static/css/main.f9562936.css",
+    "static/js/main.b7713141.js"
   ]
 }
