@@ -7,30 +7,36 @@ import email from '../assets/email.png'
 import phone from '../assets/phone.png'
 import invalid from '../assets/invalid.png'
 import valid from '../assets/valid.png'
+import {Link, useNavigate} from 'react-router-dom'
 
 export default function Experience() {
-  const [addForm, setAddForm] = useState(false)
+
 
   const { register, handleSubmit, getValues,  setValue, trigger, formState: { errors } } = useForm()
 
-  const onSubmit = (data) =>{
-    console.log(data)
+  const navigate = useNavigate()
+  const onSubmit = () =>{
+       navigate("/education")
+   
+   } 
+   const handleClick = () =>{
+    trigger("name")
+  
   }
+
 
   const handleChange = (event, input) => {
     setValue(input, event.target.value);
     trigger(event.target.name);
   };
-  const handleClick = () =>{
-    setAddForm(!addForm)
-  }
+ 
   
   
   return (
     <Main>
       <Exp>
       <Header>
-          <Button><img src={back}/></Button>
+          <Button><Link to="/" style={{color:"white", textDecoration:"none"}}><img src={back}/></Link></Button>
           <Title>გამოცდილება</Title>
           <Pages>2/3</Pages>
         </Header>
@@ -40,7 +46,7 @@ export default function Experience() {
             <label style={errors.name && {color:"#E52F2F"}}>თანამდებობა</label>
             <input className={(errors.position === undefined && getValues("position") !== undefined && getValues("position") !=="") ? "position valid" : "position" }
             type="text" placeholder="დეველოპერი, დიზაინერი, ა.შ."
-            {...register("position", {minLength:{value:2, message:"error"}})}
+            {...register("position", {minLength:{value:2, message:"error"},required:true})}
             style={errors.position && {border:"1px solid   #EF5050"} } onChange={(e) => { handleChange(e, "position");}}/>
              {errors.position && <Img src={invalid}/>}
             {(errors.position === undefined && getValues("position") !== undefined && getValues("position") !=="") && <Img src={valid}/>}
@@ -50,7 +56,7 @@ export default function Experience() {
             <label style={errors.name && {color:"#E52F2F"}}>დამსაქმებელი</label>
             <input className={(errors.employer === undefined && getValues("employer") !== undefined && getValues("employer") !=="") ? "employer valid" : "employer" }
              type="text" placeholder="დამსაქმებელი"
-            {...register("employer", {minLength:{value:2, message:"error"}},{required:true})}
+            {...register("employer", {minLength:{value:2, message:"error"},required:true})}
             style={errors.employer && {border:"1px solid   #EF5050"} } onChange={(e) => { handleChange(e, "employer");}}/>
              {errors.employer && <Img src={invalid}/>}
             {(errors.employer === undefined && getValues("employer") !== undefined && getValues("employer") !=="") && <Img src={valid}/>}
@@ -82,11 +88,12 @@ export default function Experience() {
           <Line2/>
           <button onClick={handleClick} className="add">მეტი გამოცდილების დამატება</button>
           <div className="BtnBox">
-            <button className="Btnback">უკან</button>
+          <button className="Btnback"><Link to="/privateinfo"  style={{color:"white", textDecoration:"none"}}>უკან</Link></button>
             <button className="Btn">შემდეგი</button>
           </div>
 
         </form>
+       
 
         
 

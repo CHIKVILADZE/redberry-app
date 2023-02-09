@@ -9,31 +9,38 @@ import phone from '../assets/phone.png'
 import invalid from '../assets/invalid.png'
 import valid from '../assets/valid.png'
 import { getValue } from '@testing-library/user-event/dist/utils'
+import {useNavigate, Link} from 'react-router-dom'
 
 
 export default function PrivateInfo() {
   const { register, handleSubmit, getValues,  setValue, trigger, formState: { errors } } = useForm()
 
-  const onSubmit = (data) =>{
-        console.log(data)
+  const navigate = useNavigate()
+  const onSubmit = () =>{
+       navigate("/experience")
+   
+   } 
+   
 
-  }
+  
 
   const handleChange = (event, input) => {
     setValue(input, event.target.value);
     trigger(event.target.name);
-
+    
   }
+ 
+  const handleClick = () =>{
+    trigger()
   
-  console.log(getValues("descript"))
+  }
 
-  
 
   return (
     <Main>
       <Info>
         <Header>
-          <Button><img src={back}/></Button>
+          <Link to="/" style={{color:"white", textDecoration:"none"}}><Button><img src={back}/></Button></Link>
           <Title>პირადი ინფო</Title>
           <Pages>1/3</Pages>
         </Header>
@@ -44,7 +51,7 @@ export default function PrivateInfo() {
               <label style={errors.name && {color:"#E52F2F"}}>სახელი</label>
               <input className={(errors.name === undefined && getValues("name") !== undefined && getValues("name") !=="") ? "nameinput valid" : "nameinput" }
                type="text" placeholder="ანზორ" {...register("name",
-              {minLength:{value:2, message:"error"},pattern:{value:/^[ა-ჰ]+$/, message:"errors"},
+              {minLength:{value:2, message:"errors"},pattern:{value:/^[ა-ჰ]+$/, message:"errors"},
               required:{value:true, message:"errors"}})}  onChange={(e) => { handleChange(e, "name");
               }} style={errors.name && {border:"1px solid   #EF5050"} }/>
                {errors.name && <Img src={invalid}/>}
@@ -57,7 +64,7 @@ export default function PrivateInfo() {
               <label style={errors.surname && {color:"#E52F2F"}}>გვარი</label>
               <input className={(errors.surname === undefined && getValues("surname") !== undefined && getValues("surname") !=="") ? "surnameinput valid" : "surnameinput" }
                type="text" placeholder="მუმლაძე" {...register("surname",
-              {minLength:{value:2, message:"error"},pattern:{value:/^[ა-ჰ]+$/, message:"errors"},
+              {minLength:{value:2, message:"errors"},pattern:{value:/^[ა-ჰ]+$/, message:"errors"},
               required:{value:true, message:"errors"}})}  onChange={(e) => { handleChange(e, "surname");}}
               style={errors.surname && {border:"1px solid  #EF5050"}}/>
               {errors.surname && <Img src={invalid}/>}
@@ -69,7 +76,7 @@ export default function PrivateInfo() {
           <UploadPhoto>
             <h5>პირადი ფოტოს ატვირთვა</h5>
             <label className="uploadlabel" htmlFor='upload'>ატვირთვა</label>
-            <input id='upload' className="upload" type="file" {...register("photo", {required:true})}
+            <input id='upload' className="upload" type="file" {...register("photo")}
              onChange={(e) => { handleChange(e, "photo");}}/>
           </UploadPhoto>
           <AboutMe>
@@ -97,9 +104,9 @@ export default function PrivateInfo() {
               mask="+999 999 99 99 99"
               maskChar={null}
               {...register("phone", {
-                required: { value: true, message: "error" },
+                required: { value: true, message: "errors" },
                 pattern: {value: /^\+995\s\d{3}\s\d{2}\s\d{2}\s\d{2}$/,
-                  message: "invalid", },})} onChange={(e) => { handleChange(e, "phone");}}
+                  message: "errors", },})} onChange={(e) => { handleChange(e, "phone");}}
                   style={errors.phone && {border:"1px solid  #EF5050"}} />
              {errors.phone && <img className="emailinvalid" src={invalid}/>}  
              {(errors.phone === undefined && getValues("phone") !== undefined && getValues("phone") !=="") && <img className="emailvalid" src={valid}/>} 
@@ -108,7 +115,10 @@ export default function PrivateInfo() {
              
             <span>უნდა აკმაყოფილებდეს ქართული მობილურის ნომრის ფორმატს</span>
           </Mobile>
-          <Btn type="submit">ᲨᲔᲛᲓᲔᲒᲘ</Btn>
+          
+            
+           
+           <Btn type="submit" onClick={handleClick}>ᲨᲔᲛᲓᲔᲒᲘ</Btn>
         </form>
         
       </Info>
@@ -125,6 +135,7 @@ export default function PrivateInfo() {
         
 
       </div>
+      
       
     </Main>
   )
@@ -244,7 +255,7 @@ const Btn = styled.button`
   color: #FFFFFF;
   position:absolute;
   left:797px;
-  top:967px;
+  top:867px;
   border-radius:4px;
   border:none;
 `

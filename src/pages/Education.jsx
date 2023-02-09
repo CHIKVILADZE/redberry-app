@@ -6,15 +6,23 @@ import email from '../assets/email.png'
 import phone from '../assets/phone.png'
 import invalid from '../assets/invalid.png'
 import valid from '../assets/valid.png'
+import {Link, useNavigate} from 'react-router-dom'
 
 
 export default function Education() {
 
   const { register, handleSubmit, getValues, setValue, trigger, formState: { errors } } = useForm()
-
-  const onSubmit = (data) =>{
-    console.log(data)
+  const navigate = useNavigate()
+  const onSubmit = () =>{
+       navigate("/resume")
+   
+   } 
+   const handleClick = () =>{
+    trigger()
+  
   }
+
+
   const handleChange = (event, input) => {
     setValue(input, event.target.value);
     trigger(event.target.name);
@@ -24,7 +32,7 @@ export default function Education() {
     <Main>
       <Edu>
       <Header>
-          <Button><img src={back}/></Button>
+          <Button><Link to="/" style={{color:"white", textDecoration:"none"}}><img src={back}/></Link></Button>
           <Title>განათლება</Title>
           <Pages>3/3</Pages>
         </Header>
@@ -75,8 +83,8 @@ export default function Education() {
           <Line2/>
           <button className="add">სხვა სასწავლებლის დამატება</button>
           <div className="BtnBox">
-            <button className="Btnback">უკან</button>
-            <button className="Btn">დასრულება</button>
+            <button className="Btnback"><Link to="/experience"  style={{color:"white", textDecoration:"none"}}>უკან</Link></button>
+            <button className="Btn" onClick={handleClick}>დასრულება</button>
           </div>
         </form>
       </Edu>

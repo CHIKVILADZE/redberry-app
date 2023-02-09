@@ -3,6 +3,8 @@ import background from '../assets/background.png'
 import redberry from '../assets/redberry.png'
 import ring from '../assets/ring.png'
 import styled from 'styled-components'
+import {Link} from 'react-router-dom'
+
 
 
 export default function GetStarted() {
@@ -13,7 +15,7 @@ export default function GetStarted() {
       </Header>
       <Line/>
       <Img2 src={ring}/>
-      <Btn>რეზიუმეს დამატება</Btn>
+      <Btn><Link to="/privateinfo" style={{color:"white", textDecoration:"none"}}>რეზიუმეს დამატება</Link></Btn>
     </Main>
   )
 }

@@ -1,16 +1,24 @@
 import styled from 'styled-components'
 import GetStarted from './components/GetStarted'
-import PrivateInfo from './components/PrivateInfo';
-import Experience from './components/Experience';
-import Education from './components/Education';
+import PrivateInfo from './pages/PrivateInfo';
+import Experience from './pages/Experience';
+import Education from './pages/Education';
+import {Routes, Route} from 'react-router-dom'
+
 
 function App() {
   return (
     <div className="App">
-        {/* <GetStarted/> */}
-        {/* <PrivateInfo/> */}
-        <Experience/>
-         {/* <Education/>  */}
+
+
+
+         <Routes>
+            <Route path="/" element={<GetStarted/>}/>
+            <Route path="/experience" element={<Experience/>}/>
+            <Route path="/education" element={<Education/>}/>
+            <Route path="/privateinfo" element={<PrivateInfo/>}/>
+         </Routes>
+      
     </div>
   );
 }
