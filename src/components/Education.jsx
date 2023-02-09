@@ -91,7 +91,6 @@ export default function Education() {
         </div>
 
       </div>
-      
     </Main>
   )
 }
