@@ -7,6 +7,7 @@
 form{
   display:flex;
   flex-direction: column;
+  position:relative;
   
 }
 
@@ -25,6 +26,7 @@ form{
   flex-direction: column;
   gap:8px;
   padding-left:24px;
+  position:relative;
 }
 label{
   font-family: 'Helvetica Neue';
@@ -54,6 +56,8 @@ span{
   height:48px;
   border-radius:4px;
   border:1px solid #BCBCBC;
+  padding-left:16px;
+  outline: none;
 }
 ::placeholder{
   font-family: 'Helvetica Neue';
@@ -84,22 +88,47 @@ span{
   color: #FFFFFF;
  }
 
+ input, textarea{
+  outline: none;
+ }
+
 .upload{
 
   display: none;
 }
-textarea{
+.textarea{
   width:798px;
   height:103px;
   resize:none;
+  outline: none;
+  padding-left:16px;
+  padding-top:13px;
 }
-.email, .mobile{
+.email, .phone{
   width:798px;
   height:48px;
   background-color:  #FFFFFF;
   padding-left:16px;
   border:1px solid #BCBCBC;
+  outline: none;
 }
+
+ .valid{
+  border:1px solid #98E37E;
+ }
+
+ .emailinvalid{
+  position:absolute;
+  left:805px;
+  top:35px;
+
+ }
+ .emailvalid{
+  position:absolute;
+  top:35px;
+  left:770px;
+ }
+
 
 
              /* Experience */
@@ -136,8 +165,9 @@ textarea{
   line-height: 20px;
   color: #FFFFFF;
   border:none;
-  margin-top:45px;
-  margin-left:149px;
+  position:absolute;
+  top:770px;
+  left:149px;
  }
  
  .BtnBox{
@@ -147,8 +177,12 @@ textarea{
   height:48px;
  
   margin-left:150px;
-  margin-top:100px;
+  margin-top:180px;
   justify-content: space-between;
+ }
+ .inputmask{
+  width:798px;
+  height:48px;
  }
 
  .Btnback {
@@ -187,9 +221,54 @@ textarea{
   width:798px;
   height:48px;
   padding-left:16px;
+  border-radius:4px;
 }
 
 select{
   width:371px;
   height:48px;
+  outline:none;
+  border-radius:4px;
+}
+option{
+  font-family: 'Helvetica Neue';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 21px;
+  display: flex;
+  align-items: center;
+
+  color: #1A1A1A;
+}
+#hidden-opt{
+  display:none;
+}
+
+
+
+          /* Result */
+.result{
+  width:822px;
+  height:1080px;
+  border:5px solid red;
+
+}
+h1{
+  font-family: 'Helvetica Neue';
+font-style: normal;
+font-weight: 700;
+font-size: 34px;
+line-height: 42px;
+color: #F93B1D;
+}
+
+h3{
+  
+font-family: 'Helvetica Neue';
+font-style: normal;
+font-weight: 700;
+font-size: 18px;
+line-height: 22px;
+color: #F93B1D;
 }

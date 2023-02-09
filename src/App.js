@@ -7,10 +7,10 @@ import Education from './components/Education';
 function App() {
   return (
     <div className="App">
-        <GetStarted/>
+        {/* <GetStarted/> */}
         {/* <PrivateInfo/> */}
-        {/* <Experience/> */}
-        {/* <Education/> */}
+        <Experience/>
+         {/* <Education/>  */}
     </div>
   );
 }

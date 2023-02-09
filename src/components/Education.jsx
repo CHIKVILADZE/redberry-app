@@ -1,9 +1,25 @@
 import React from 'react'
 import styled from 'styled-components'
 import back from '../assets/back.png'
+import {useForm} from 'react-hook-form'
+import email from '../assets/email.png'
+import phone from '../assets/phone.png'
+import invalid from '../assets/invalid.png'
+import valid from '../assets/valid.png'
 
 
 export default function Education() {
+
+  const { register, handleSubmit, getValues, setValue, trigger, formState: { errors } } = useForm()
+
+  const onSubmit = (data) =>{
+    console.log(data)
+  }
+  const handleChange = (event, input) => {
+    setValue(input, event.target.value);
+    trigger(event.target.name);
+  };
+
   return (
     <Main>
       <Edu>
@@ -13,16 +29,23 @@ export default function Education() {
           <Pages>3/3</Pages>
         </Header>
         <Line/>
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <School>
-            <label>სასწავლებელი</label>
-            <input className="school" type="text" placeholder="სასწავლებელი"/>
+            <label style={errors.school && {color:"#E52F2F"}}>სასწავლებელი</label>
+            <input className={(errors.school === undefined && getValues("school") !== undefined && getValues("school") !=="") ?  "school valid" : "school" }
+            type="text" placeholder="სასწავლებელი" {...register("school" , {minLength:{value:2, message:'errors'},required:true})}
+            onChange={(e) => { handleChange(e, "school");}}  style={errors.school && {border:"1px solid   #EF5050"} }/>
+             {errors.school && <Img src={invalid}/>}
+            {(errors.school === undefined && getValues("school") !== undefined && getValues("school") !=="") && <Img src={valid}/>}
             <span>მინიმუმ 2 სიმბოლო</span>
           </School>
           <Quality>
             <SelectBox>
-              <label>ხარისხი</label>
-              <select placeholder="აირჩიეთ ხარისხი">
+              <label style={errors.select && {color:"#E52F2F"}} >ხარისხი</label>
+              <select {...register("select", {required:true})}   onChange={(e) => { handleChange(e, "select");}} 
+              className={(errors.select === undefined && getValues("select") !== undefined && getValues("select") !=="") ?  "select  valid" : "select" }
+              style={errors.select && {border:"1px solid   #EF5050"} }>
+                <option value=""  disabled selected hidden>აირჩიეთ ხარისხი</option>
                 <option>საშუალო სკოლის დიპლომი</option>
                 <option>ზოგადსაგანმანათლებლო დიპლომი</option>
                 <option>ბაკალავრი</option>
@@ -35,13 +58,19 @@ export default function Education() {
               </select>
             </SelectBox>
             < DateBox>
-              <label>დამთავრების რიცხვი</label>
-              <input type="date"/>
+            <label style={errors.enddate && {color:"#E52F2F"}}>დამთავრების რიცხვი</label>
+              <input type="date" className={(errors.enddate === undefined && getValues("enddate") !== undefined && getValues("enddate") !=="") ? "date valid" : "date" } 
+              {...register("enddate",{required:true})}
+              onChange={(e) => { handleChange(e, "enddate");}}
+              style={errors.enddate && {border:"1px solid   #EF5050"} }/>
             </DateBox>
           </Quality>
           <Description>
-            <label>აღწერა</label>
-            <textarea className="description-text" placeholder="განათლების აღწერა"></textarea>
+          <label style={errors.description && {color:"#E52F2F"}}>აღწერა</label>
+            <textarea className={(errors.description === undefined && getValues("description") !== undefined && getValues("description") !=="") ?  "description-text valid" : "description-text" }
+             placeholder="როლი თანამდებობაზე და ზოგადი აღწერა"
+            {...register("description", {required:true})}  style={errors.description && {border:"1px solid   #EF5050"} }
+            onChange={(e) => { handleChange(e, "description");}}></textarea>
           </Description>
           <Line2/>
           <button className="add">სხვა სასწავლებლის დამატება</button>
@@ -51,6 +80,17 @@ export default function Education() {
           </div>
         </form>
       </Edu>
+      <div className="result">
+        <div>
+          <h1>{getValues("name")} {getValues("surname")}</h1>
+          <span><img src={email}/>{getValues("email")}</span>
+          <p><img src={phone}/>{getValues("phone")}</p>
+          <h3>ჩემს შესახებ</h3>
+          <p>ძალიან მიყვარს დიზაინის კეთება. დილით ადრე რომ ავდგები გამამხნევებელი
+             ვარჯიშების მაგიერ დიზაინს ვაკეთებ.</p>
+        </div>
+
+      </div>
       
     </Main>
   )
@@ -60,6 +100,8 @@ export default function Education() {
 const Main = styled.div`
     width:1920px;
     height:1080px;
+    display: flex;
+    flex-direction: row;
 
 `
 const Edu = styled.div`
@@ -121,16 +163,23 @@ const School = styled.div`
   display:flex;
   flex-direction: column;
   margin-left:126px;
-  margin-top:157px;
+  margin-top:77px;
   border:1px solid black;
   gap:8px;
+  position:relative;
+`
+
+const Img = styled.img`
+  position:absolute;
+  top:45px;
+  left:770px;
 `
 
 const Quality = styled.div`
   display:flex;
   flex-direction: row;
   border:1px solid black;
-  margin-top:25px;
+  margin-top:40px;
   width:80%;
   margin-left:126px;
 `
