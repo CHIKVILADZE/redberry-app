@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import background from '../assets/background.png'
 import redberry from '../assets/redberry.png'
 import ring from '../assets/ring.png'
@@ -8,6 +8,10 @@ import {Link} from 'react-router-dom'
 
 
 export default function GetStarted() {
+
+  // useEffect(() =>{
+  //   localStorage.clear();
+  // },[])
   return (
     <Main>
       <Header>

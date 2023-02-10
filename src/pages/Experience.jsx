@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import back from '../assets/back.png'
 import {useForm} from 'react-hook-form'
-import {useState} from 'react'
+import {useEffect} from 'react'
 import email from '../assets/email.png'
 import phone from '../assets/phone.png'
 import invalid from '../assets/invalid.png'
@@ -24,12 +24,28 @@ export default function Experience() {
   
   }
 
+  // useEffect(() =>{
+  //   const storedPosition = localStorage.getItem("position");
+  //   const storedEmployer = localStorage.getItem("employer");
+  //   const storedStartDate = localStorage.getItem("startdate");
+  //   const storedEndDate = localStorage.getItem("enddate");
+  //   const storedDescription = localStorage.getItem("description");
+  //     setValue("position", storedPosition )
+  //     setValue("employer", storedEmployer )
+  //     setValue("startdate", storedStartDate )
+  //     setValue("enddate", storedEndDate )
+  //     setValue("description", storedDescription )
+
+  //  },[])
+
 
   const handleChange = (event, input) => {
     setValue(input, event.target.value);
     trigger(event.target.name);
+    // localStorage.setItem(event.target.name, event.target.value);
   };
  
+
   
   
   return (

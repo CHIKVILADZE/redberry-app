@@ -1,4 +1,5 @@
 import React from 'react'
+import {useEffect, useState} from 'react';
 import styled from 'styled-components'
 import back from '../assets/back.png'
 import {useForm} from 'react-hook-form'
@@ -7,20 +8,63 @@ import phone from '../assets/phone.png'
 import invalid from '../assets/invalid.png'
 import valid from '../assets/valid.png'
 import {Link, useNavigate} from 'react-router-dom'
+import axios from 'axios'
 
 
 export default function Education() {
+
+  const [degree1, setDegree1] = useState()
+  const [degree2, setDegree2] = useState()
+  const [degree3, setDegree3] = useState()
+  const [degree4, setDegree4] = useState()
+  const [degree5, setDegree5] = useState()
+  const [degree6, setDegree6] = useState()
+  const [degree7, setDegree7] = useState()
+  const [degree8, setDegree8] = useState()
+  const [degree9, setDegree9] = useState()
+
+
+
 
   const { register, handleSubmit, getValues, setValue, trigger, formState: { errors } } = useForm()
   const navigate = useNavigate()
   const onSubmit = () =>{
        navigate("/resume")
-   
    } 
+
+   useEffect (() =>{
+     let getData = async () =>{
+      let response = await axios.get("https://resume.redberryinternship.ge/api/degrees")
+      let Id1 = response.data[0].title
+      let Id2 = response.data[1].title
+      let Id3 = response.data[2].title
+      let Id4 = response.data[3].title
+      let Id5 = response.data[4].title
+      let Id6 = response.data[5].title
+      let Id7 = response.data[6].title
+      let Id8 = response.data[7].title
+      let Id9 = response.data[8].title
+        setDegree1(Id1)
+        setDegree2(Id2)
+        setDegree3(Id3)
+        setDegree4(Id4)
+        setDegree5(Id5)
+        setDegree6(Id6)
+        setDegree7(Id7)
+        setDegree8(Id8)
+        setDegree9(Id9)
+
+   
+     };
+     getData()
+   }, [])
+
+
    const handleClick = () =>{
     trigger()
   
   }
+  console.log(degree1)
 
 
   const handleChange = (event, input) => {
@@ -54,15 +98,15 @@ export default function Education() {
               className={(errors.select === undefined && getValues("select") !== undefined && getValues("select") !=="") ?  "select  valid" : "select" }
               style={errors.select && {border:"1px solid   #EF5050"} }>
                 <option value=""  disabled selected hidden>აირჩიეთ ხარისხი</option>
-                <option>საშუალო სკოლის დიპლომი</option>
-                <option>ზოგადსაგანმანათლებლო დიპლომი</option>
-                <option>ბაკალავრი</option>
-                <option>მაგისტრი</option>
-                <option>დოქტორი</option>
-                <option>ასოცირებული ხარისხი</option>
-                <option>სტუდენტი</option>
-                <option>კოლეჯი (ხარისხის გარეშე)</option>
-                <option>სხვა</option>
+                <option>{degree1}</option>
+                <option>{degree2}</option>
+                <option>{degree3}</option>
+                <option>{degree4}</option>
+                <option>{degree5}</option>
+                <option>{degree6}</option>
+                <option>{degree7}</option>
+                <option>{degree8}</option>
+                <option>{degree9}</option>
               </select>
             </SelectBox>
             < DateBox>
