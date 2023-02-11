@@ -19,7 +19,7 @@ export default function GetStarted() {
       </Header>
       <Line/>
       <Img2 src={ring}/>
-      <Btn><Link to="/privateinfo" style={{color:"white", textDecoration:"none"}}>რეზიუმეს დამატება</Link></Btn>
+      <Link to="/privateinfo" style={{color:"white", textDecoration:"none"}}><Btn>რეზიუმეს დამატება</Btn></Link>
     </Main>
   )
 }

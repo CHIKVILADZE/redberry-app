@@ -10,6 +10,7 @@ import invalid from "../assets/invalid.png";
 import valid from "../assets/valid.png";
 import { getValue } from "@testing-library/user-event/dist/utils";
 import { useNavigate, Link } from "react-router-dom";
+import Result from '../components/Resume'
 
 export default function PrivateInfo() {
   const {
@@ -21,28 +22,39 @@ export default function PrivateInfo() {
     trigger,
     formState: { errors },
   } = useForm();
+
+  const [name, setName] = useState(false);
   const [surname, setSurname] = useState(false);
+  const [email, setEmail] = useState(false);
+  const [phone, setPhone] = useState(false)
+  
+ 
 
   const navigate = useNavigate();
   const onSubmit = () => {
     navigate("/experience");
   };
+  let storedName = localStorage.getItem("name");
+  let storedSurname = localStorage.getItem("surname");
+  let storedEmail = localStorage.getItem("email");
+  let storedPhone = localStorage.getItem("phone");
+  let storedDescript = localStorage.getItem("descript");
 
   useEffect(() => {
-    const storedName = localStorage.getItem("name");
-    const storedSurname = localStorage.getItem("surname");
-    const storedEmail = localStorage.getItem("email");
-    const storedPhone = localStorage.getItem("phone");
-    const storedDescript = localStorage.getItem("descript");
+     storedSurname = localStorage.getItem("surname");
+     storedEmail = localStorage.getItem("email");
+     storedName = localStorage.getItem("name");
+     storedPhone = localStorage.getItem("phone");
+     storedDescript = localStorage.getItem("descript");
     setValue("name", storedName);
     setValue("surname", storedSurname);
     setValue("email", storedEmail);
-    if (storedPhone !== undefined) {
+    if (storedPhone !== null) {
       setValue("phone", storedPhone);
     }
 
     setValue("descript", storedDescript);
-    console.log("errrrroooorrrss",watch("phone"));
+    console.log(storedPhone);
   }, []);
 
   const handleChange = (event, input) => {
@@ -86,11 +98,13 @@ export default function PrivateInfo() {
               <label style={errors.name && { color: "#E52F2F" }}>სახელი</label>
               <input
                 className={
-                  errors.name === undefined &&
+                  name == true ?
+                  (errors.name === undefined &&
                   getValues("name") !== undefined &&
                   getValues("name") !== ""
                     ? "nameinput valid"
-                    : "nameinput"
+                    : "nameinput")
+                    :"nameinput"
                 }
                 type="text"
                 placeholder="ანზორ"
@@ -101,13 +115,16 @@ export default function PrivateInfo() {
                 })}
                 onChange={(e) => {
                   handleChange(e, "name");
+                  setName(true)
                 }}
-                style={errors.name && { border: "1px solid   #EF5050" }}
+                style={name == true ? errors.name && { border: "1px solid   #EF5050" }  : { color: "#BCBCBC" }}
               />
-              {errors.name && <Img src={invalid} />}
-              {errors.name === undefined &&
-                getValues("name") !== undefined &&
-                getValues("name") !== "" && <Img src={valid} />}
+               {name == true ? errors.name && <Img src={invalid} /> : null}
+               {name == true
+                ? errors.name === undefined &&
+                  getValues("name") !== undefined &&
+                  getValues("name") !== "" && <Img src={valid} />
+                : null}
 
               <span>მინიმუმ 2 ასო, ქართული ასოები</span>
             </div>
@@ -129,7 +146,7 @@ export default function PrivateInfo() {
                       getValues("surname") !== ""
                       ? "surnameinput valid"
                       : "surnameinput"
-                    : { color: "#BCBCBC" }
+                    : "surnameinput"
                 }
                 type="text"
                 placeholder="მუმლაძე"
@@ -170,6 +187,7 @@ export default function PrivateInfo() {
               {...register("photo")}
               onChange={(e) => {
                 handleChange(e, "photo");
+                
               }}
             />
           </UploadPhoto>
@@ -210,15 +228,19 @@ export default function PrivateInfo() {
               })}
               onChange={(e) => {
                 handleChange(e, "email");
+                setEmail(true)
               }}
               style={errors.email && { border: "1px solid  #EF5050" }}
             />
             {errors.email && <img className="emailinvalid" src={invalid} />}
-            {errors.email === undefined &&
+            {email == true ? errors.email === undefined &&
               getValues("email") !== undefined &&
               getValues("email") !== "" && (
                 <img className="emailvalid" src={valid} />
-              )}
+              ) : null}
+
+       
+
             <span>უნდა მთავრდებოდეს @redberry.ge-ით</span>
           </Email>
           <Mobile>
@@ -226,6 +248,7 @@ export default function PrivateInfo() {
               მობილურის ნომერი
             </label>
             <InputMask
+            value={storedPhone}
               className={
                 errors.phone === undefined &&
                 getValues("phone") !== undefined &&
@@ -238,25 +261,29 @@ export default function PrivateInfo() {
               maskChar={null}
               {...register("phone", {
                 required: { value: true, message: "errors" },
-                pattern: {
+                pattern: {                                                            
                   value: /^\+995\s\d{3}\s\d{2}\s\d{2}\s\d{2}$/,
                   message: "errors",
                 },
               })}
               onChange={(e) => {
                 handleChange(e, "phone");
+                setPhone(true)
               }}
               style={errors.phone && { border: "1px solid  #EF5050" }}
             />
             {errors.phone && <img className="emailinvalid" src={invalid} />}
-            {errors.phone === undefined &&
+            {phone == true ? errors.phone === undefined &&
               getValues("phone") !== undefined &&
               getValues("phone") !== "" && (
                 <img className="emailvalid" src={valid} />
-              )}
+              ) : null}
 
             <span>უნდა აკმაყოფილებდეს ქართული მობილურის ნომრის ფორმატს</span>
           </Mobile>
+
+
+
 
           <Btn
             type="submit"
@@ -269,26 +296,8 @@ export default function PrivateInfo() {
         </form>
       </Info>
 
-      <div className="result">
-        <div>
-          <h1>
-            {getValues("name")} {getValues("surname")}
-          </h1>
-          <span>
-            <img src={email} />
-            {getValues("email")}
-          </span>
-          <p>
-            <img src={phone} />
-            {getValues("phone")}
-          </p>
-          <h3>ჩემს შესახებ</h3>
-          <p>
-            ძალიან მიყვარს დიზაინის კეთება. დილით ადრე რომ ავდგები
-            გამამხნევებელი ვარჯიშების მაგიერ დიზაინს ვაკეთებ.
-          </p>
-        </div>
-      </div>
+      <Result/>
+        
     </Main>
   );
 }
@@ -296,14 +305,14 @@ export default function PrivateInfo() {
 const Main = styled.div`
   width: 1920px;
   height: 1080px;
-  border: 2px solid black;
+  
   display: flex;
   flex-direction: row;
 `;
 const Info = styled.div`
   width: 1098px;
   height: 1080px;
-  border: 1px solid red;
+ 
   background-color: #f9f9f9;
 `;
 const Header = styled.header`
@@ -363,12 +372,12 @@ const UploadPhoto = styled.div`
   flex-direction: row;
   margin-left: 150px;
   margin-top: 54px;
-  border: 1px solid black;
+ 
 `;
 const AboutMe = styled.div`
   width: 846px;
   height: 148px;
-  border: 1px solid black;
+ 
   margin-left: 126px;
   margin-top: 54px;
 `;
@@ -378,7 +387,7 @@ const Email = styled.div`
   height: 122px;
   margin-top: 25px;
   margin-left: 126px;
-  border: 1px solid black;
+  
   display: flex;
   flex-direction: column;
   position: relative;
@@ -387,7 +396,7 @@ const Mobile = styled.div`
   width: 846px;
   height: 122px;
   margin-left: 126px;
-  border: 1px solid black;
+ 
   display: flex;
   flex-direction: column;
   margin-top: 8px;
