@@ -8,7 +8,7 @@ import Result from "./pages/Result";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import Exercise from "./components/Exercise";
 import { useState } from "react";
-import { HashRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 
 function App() {
   const [formData, setFormData] = useState(
@@ -45,7 +45,7 @@ function App() {
 
   return (
     <Main>
-      <HashRouter>
+      <BrowserRouter>
         <Routes>
           <Route
             path="/redberry-app"
@@ -83,7 +83,7 @@ function App() {
             element={<Result formData={formData} setFormData={setFormData} />}
           />
         </Routes>
-      </HashRouter>
+      </BrowserRouter>
 
       {isResumeVisible ? <Resume formData={formData} /> : null}
     </Main>
