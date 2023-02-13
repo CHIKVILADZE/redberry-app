@@ -148,13 +148,13 @@ export default function Education({ formData, setFormData, setIsResumeVisible })
     let file = dataURLtoFile(formData.image, "image-name.png");
     trigger();
 
-    axios.post( 'https://resume.redberryinternship.ge/api', formData)
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+    // axios.post( 'https://resume.redberryinternship.ge/api', formData)
+    // .then(function (response) {
+    //   console.log(response);
+    // })
+    // .catch(function (error) {
+    //   console.log(error);
+    // });
 
   };
 
