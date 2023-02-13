@@ -10,9 +10,9 @@ import invalid from "../assets/invalid.png";
 import valid from "../assets/valid.png";
 import { getValue } from "@testing-library/user-event/dist/utils";
 import { useNavigate, Link } from "react-router-dom";
-import Result from '../components/Resume'
+import Resume from "../components/Resume";
 
-export default function PrivateInfo() {
+export default function PrivateInfo({ formData, setFormData }) {
   const {
     register,
     handleSubmit,
@@ -26,9 +26,7 @@ export default function PrivateInfo() {
   const [name, setName] = useState(false);
   const [surname, setSurname] = useState(false);
   const [email, setEmail] = useState(false);
-  const [phone, setPhone] = useState(false)
-  
- 
+  const [phone, setPhone] = useState(false);
 
   const navigate = useNavigate();
   const onSubmit = () => {
@@ -37,44 +35,67 @@ export default function PrivateInfo() {
   let storedName = localStorage.getItem("name");
   let storedSurname = localStorage.getItem("surname");
   let storedEmail = localStorage.getItem("email");
-  let storedPhone = localStorage.getItem("phone");
-  let storedDescript = localStorage.getItem("descript");
+  let storedPhone = localStorage.getItem("phone_number");
+  let storedAboutMe = localStorage.getItem("about_me");
 
   useEffect(() => {
-     storedSurname = localStorage.getItem("surname");
-     storedEmail = localStorage.getItem("email");
-     storedName = localStorage.getItem("name");
-     storedPhone = localStorage.getItem("phone");
-     storedDescript = localStorage.getItem("descript");
+    storedSurname = localStorage.getItem("surname");
+    storedEmail = localStorage.getItem("email");
+    storedName = localStorage.getItem("name");
+    storedPhone = localStorage.getItem("phone_number");
+    storedAboutMe = localStorage.getItem("about_me");
     setValue("name", storedName);
     setValue("surname", storedSurname);
     setValue("email", storedEmail);
     if (storedPhone !== null) {
-      setValue("phone", storedPhone);
+      setValue("phone_number", storedPhone);
     }
 
-    setValue("descript", storedDescript);
-    console.log(storedPhone);
+    setValue("about_me", storedAboutMe);
+    
   }, []);
 
   const handleChange = (event, input) => {
     setValue(input, event.target.value);
     trigger(event.target.name);
     localStorage.setItem(event.target.name, event.target.value);
+
+    if (input === "name") {
+      setFormData({...formData, name: event.target.value})
+      localStorage.setItem("formData", JSON.stringify({...formData, name: event.target.value}))
+    } else if (input === "surname") {
+      setFormData({...formData, surname: event.target.value})
+      localStorage.setItem("formData", JSON.stringify({...formData, surname: event.target.value}))
+    } else if (input === "about_me") {
+      setFormData({...formData, about_me: event.target.value})
+      localStorage.setItem("formData", JSON.stringify({...formData, about_me: event.target.value}))
+    } else if (input === "email") {
+      setFormData({...formData, email: event.target.value})
+      localStorage.setItem("formData", JSON.stringify({...formData, email: event.target.value}))
+    } else if (input === "phone_number") {
+      setFormData({...formData, phone_number: event.target.value})
+      localStorage.setItem("formData", JSON.stringify({...formData, phone_number: event.target.value}))
+    }
+
   };
+
+  const handleChangeImage = async (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      const dataUrl = reader.result;
+      setFormData({...formData, image: dataUrl})
+      localStorage.setItem("formData", JSON.stringify({...formData, image: dataUrl}))
+    }
+      
+  };
+  
 
   const handleClick = () => {
     trigger();
   };
-  // const handleImageChange = (event) => {
-  //   const file = event.target.files[0];
-  //   const reader = new FileReader();
-  //   reader.onloadend = () => {
-  //     localStorage.setItem("image", reader.result );
-  //     setValue("image", reader.result );
-  //   };
-  //   reader.readAsDataURL(file);
-  // };
+
 
   return (
     <Main>
@@ -98,13 +119,13 @@ export default function PrivateInfo() {
               <label style={errors.name && { color: "#E52F2F" }}>სახელი</label>
               <input
                 className={
-                  name == true ?
-                  (errors.name === undefined &&
-                  getValues("name") !== undefined &&
-                  getValues("name") !== ""
-                    ? "nameinput valid"
-                    : "nameinput")
-                    :"nameinput"
+                  name == true
+                    ? errors.name === undefined &&
+                      getValues("name") !== undefined &&
+                      getValues("name") !== ""
+                      ? "nameinput valid"
+                      : "nameinput"
+                    : "nameinput"
                 }
                 type="text"
                 placeholder="ანზორ"
@@ -115,12 +136,16 @@ export default function PrivateInfo() {
                 })}
                 onChange={(e) => {
                   handleChange(e, "name");
-                  setName(true)
+                  setName(true);
                 }}
-                style={name == true ? errors.name && { border: "1px solid   #EF5050" }  : { color: "#BCBCBC" }}
+                style={
+                  name == true
+                    ? errors.name && { border: "1px solid   #EF5050" }
+                    : { color: "#BCBCBC" }
+                }
               />
-               {name == true ? errors.name && <Img src={invalid} /> : null}
-               {name == true
+              {name == true ? errors.name && <Img src={invalid} /> : null}
+              {name == true
                 ? errors.name === undefined &&
                   getValues("name") !== undefined &&
                   getValues("name") !== "" && <Img src={valid} />
@@ -186,8 +211,7 @@ export default function PrivateInfo() {
               type="file"
               {...register("photo")}
               onChange={(e) => {
-                handleChange(e, "photo");
-                
+                handleChangeImage(e, "photo");
               }}
             />
           </UploadPhoto>
@@ -195,15 +219,15 @@ export default function PrivateInfo() {
             <label>ჩემ შესახებ (არასავალდებულო)</label>
             <textarea
               className={
-                getValues("descript") !== undefined &&
-                getValues("descript") !== ""
+                getValues("about_me") !== undefined &&
+                getValues("about_me") !== ""
                   ? "textarea valid"
                   : "textarea"
               }
               placeholder="ზოგადი ინფო შენ შესახებ"
-              {...register("descript")}
+              {...register("about_me")}
               onChange={(e) => {
-                handleChange(e, "descript");
+                handleChange(e, "about_me");
               }}
             ></textarea>
           </AboutMe>
@@ -228,62 +252,61 @@ export default function PrivateInfo() {
               })}
               onChange={(e) => {
                 handleChange(e, "email");
-                setEmail(true)
+                setEmail(true);
               }}
               style={errors.email && { border: "1px solid  #EF5050" }}
             />
             {errors.email && <img className="emailinvalid" src={invalid} />}
-            {email == true ? errors.email === undefined &&
-              getValues("email") !== undefined &&
-              getValues("email") !== "" && (
-                <img className="emailvalid" src={valid} />
-              ) : null}
-
-       
+            {email == true
+              ? errors.email === undefined &&
+                getValues("email") !== undefined &&
+                getValues("email") !== "" && (
+                  <img className="emailvalid" src={valid} />
+                )
+              : null}
 
             <span>უნდა მთავრდებოდეს @redberry.ge-ით</span>
           </Email>
           <Mobile>
-            <label style={errors.phone && { color: "#E52F2F" }}>
+            <label style={errors.phone_number && { color: "#E52F2F" }}>
               მობილურის ნომერი
             </label>
             <InputMask
-            value={storedPhone}
+              value={storedPhone}
               className={
                 errors.phone === undefined &&
-                getValues("phone") !== undefined &&
-                getValues("phone") !== ""
+                getValues("phone_number") !== undefined &&
+                getValues("phone_number") !== ""
                   ? "phone valid"
                   : "phone"
               }
               placeholder="+995 597 63 45 16"
               mask="+999 999 99 99 99"
               maskChar={null}
-              {...register("phone", {
+              {...register("phone_number", {
                 required: { value: true, message: "errors" },
-                pattern: {                                                            
+                pattern: {
                   value: /^\+995\s\d{3}\s\d{2}\s\d{2}\s\d{2}$/,
                   message: "errors",
                 },
               })}
               onChange={(e) => {
-                handleChange(e, "phone");
-                setPhone(true)
+                handleChange(e, "phone_number");
+                setPhone(true);
               }}
-              style={errors.phone && { border: "1px solid  #EF5050" }}
+              style={errors.phone_number && { border: "1px solid  #EF5050" }}
             />
-            {errors.phone && <img className="emailinvalid" src={invalid} />}
-            {phone == true ? errors.phone === undefined &&
-              getValues("phone") !== undefined &&
-              getValues("phone") !== "" && (
-                <img className="emailvalid" src={valid} />
-              ) : null}
+            {errors.phone_number && <img className="emailinvalid" src={invalid} />}
+            {phone == true
+              ? errors.phone_number === undefined &&
+                getValues("phone_number") !== undefined &&
+                getValues("phone_number") !== "" && (
+                  <img className="emailvalid" src={valid} alt="valid" />
+                )
+              : null}
 
             <span>უნდა აკმაყოფილებდეს ქართული მობილურის ნომრის ფორმატს</span>
           </Mobile>
-
-
-
 
           <Btn
             type="submit"
@@ -296,8 +319,7 @@ export default function PrivateInfo() {
         </form>
       </Info>
 
-      <Result/>
-        
+    
     </Main>
   );
 }
@@ -305,14 +327,14 @@ export default function PrivateInfo() {
 const Main = styled.div`
   width: 1920px;
   height: 1080px;
-  
+
   display: flex;
   flex-direction: row;
 `;
 const Info = styled.div`
   width: 1098px;
   height: 1080px;
- 
+
   background-color: #f9f9f9;
 `;
 const Header = styled.header`
@@ -372,12 +394,11 @@ const UploadPhoto = styled.div`
   flex-direction: row;
   margin-left: 150px;
   margin-top: 54px;
- 
 `;
 const AboutMe = styled.div`
   width: 846px;
   height: 148px;
- 
+
   margin-left: 126px;
   margin-top: 54px;
 `;
@@ -387,16 +408,17 @@ const Email = styled.div`
   height: 122px;
   margin-top: 25px;
   margin-left: 126px;
-  
+
   display: flex;
   flex-direction: column;
   position: relative;
 `;
+
 const Mobile = styled.div`
   width: 846px;
   height: 122px;
   margin-left: 126px;
- 
+
   display: flex;
   flex-direction: column;
   margin-top: 8px;
@@ -418,4 +440,4 @@ const Btn = styled.button`
   top: 867px;
   border-radius: 4px;
   border: none;
-`;
+`

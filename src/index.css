@@ -50,6 +50,11 @@ span{
   }
 
 
+.close{
+  position:absolute;
+  top:12px;
+  right:12px;
+}
 
 .nameinput, .surnameinput{
   width:371px;

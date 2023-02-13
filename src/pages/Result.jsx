@@ -4,18 +4,28 @@ import styled from 'styled-components'
 import email from "../assets/email.png";
 import phone from "../assets/phone.png";
 import photo from "../assets/photo.png";
+import Vector from "../assets/Vector.png";
 
 import back from '../assets/back.png'
-
+import { Link, useNavigate } from "react-router-dom";
 
 
  
-export default function Resume({storedName, storedSurname, storedEmail, storedPhone, storedDescript, formData}) {
-
-  console.log(formData.image)
-   return (
+export default function Result({storedName, storedSurname, storedEmail, storedPhone, storedDescript, formData}) {
+const [isMessageVisible, setIsMessageVisible] = useState(true)
+  const navigate = useNavigate();
+  return (
+    <>
+    <Button onClick = {()=> {
+      localStorage.clear()
+      navigate("/redberry-app")
+    }}>
+        
+            <img src={back} />
+      
+        </Button>
     <ResumeBox>
-     
+      
         <InfoBox>
           <H1>{formData.name} {formData.surname}</H1>
           <Emailtxt>
@@ -27,25 +37,22 @@ export default function Resume({storedName, storedSurname, storedEmail, storedPh
             {formData.phone_number}</Phonetxt>
           {formData.about_me === "" ? null :<H3>ჩემს შესახებ</H3>}
           <AboutMe>{formData.about_me}</AboutMe>
-
-          {formData.name !== "" && <Line/>}
+          <Line/>
       
       
-      <Pic><img src={formData.image}/></Pic>
+      <Pic><img src={photo}/></Pic>
 
       {formData.experiences.map((experience, index) => {
         return (
           <div key={index}>
-            {(experience.position !== "" || experience.employer !=="" || experience.start_date !== "" || experience.due_date !== ""
+            {(experience.position !== "" || experience.employer !=="" || experience.start_date !== "" || experience.end_date !== ""
             || experience.description !== "" ) && <Experience>გამოცდილება</Experience>}
 
             <Position>{experience.position} {experience.employer}</Position>
             
             <Span>{experience.start_date} - {experience.due_date}</Span>
             <Description>{experience.description}</Description>
-
-            {(experience.position !== "" || experience.employer !=="" || experience.start_date !== "" || experience.due_date !== ""
-            || experience.description !== "" ) && <Line/>}
+            <Line/>
           </div>
         )
       })}
@@ -64,15 +71,28 @@ export default function Resume({storedName, storedSurname, storedEmail, storedPh
             <Span>{education.due_date}</Span>
             <Description>{education.description}</Description>
 
-            {(education.institute !== "" || education.degree_id !=="" || education.due_date !== ""
-            || education.description !== "" ) && <Line/>}
+            <Line/>
           </div>
         )
       })}
 
 
       </InfoBox>
+
+
+      
     </ResumeBox>
+    {isMessageVisible ? <Message>
+        <p>
+          რეზიუმე წარმატებით გაიგზავნა 🎉
+        </p>
+        <img className="close"
+          src={Vector}
+          alt="close-vector"
+          onClick={() => setIsMessageVisible(false)}
+        />
+      </Message> : null}
+    </>
   )
 }
 
@@ -82,11 +102,24 @@ const ResumeBox = styled.div`
  position:relative;
   display:flex;
   flex-direction: column;
-  margin-right: 200px;
+  
+  margin:auto;
+
+  
 `
+const Message = styled.div`
+width:427px;
+height:167px;
+border:1px solid #E4E4E4;
+position:absolute;
+top:53px;
+left:1423px;
+`
+
 const InfoBox = styled.div`
   margin-left:80px;
   margin-right:80px;
+
   margin-top:68px;
 
 `
@@ -145,6 +178,15 @@ const Button = styled.button`
   position:absolute;
   top:45px;
   left:48px;
+   width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  border:none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
 `
 
 const AboutMe = styled.p`

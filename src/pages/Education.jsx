@@ -10,7 +10,7 @@ import valid from "../assets/valid.png";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-export default function Education() {
+export default function Education({ formData, setFormData, setIsResumeVisible }) {
   const [degree1, setDegree1] = useState();
   const [degree2, setDegree2] = useState();
   const [degree3, setDegree3] = useState();
@@ -21,10 +21,10 @@ export default function Education() {
   const [degree8, setDegree8] = useState();
   const [degree9, setDegree9] = useState();
 
-  const[school, setSchool] = useState(false)
-  const[degree, setDegree] = useState(false)
-  const[endDate, setEndDate] = useState(false)
-  const[description, setDescription] = useState(false)
+  const [institute, setInstitute] = useState(false);
+  const [degree, setDegree] = useState(false);
+  const [dueDate, setDueDate] = useState(false);
+  const [description, setDescription] = useState(false);
 
   const {
     register,
@@ -36,28 +36,69 @@ export default function Education() {
   } = useForm();
   const navigate = useNavigate();
   const onSubmit = () => {
-    navigate("/resume");
+    setIsResumeVisible(false);
+    localStorage.setItem("isResumeVisible", false)
+    navigate("/result");
+
+
   };
-  const handleChange = (event, input) => {
+  const handleChange = (event, input, index) => {
     setValue(input, event.target.value);
     trigger(event.target.name);
     localStorage.setItem(event.target.name, event.target.value);
+
+    let newEducation = formData.educations;
+    if (input === "institute") {
+      newEducation[index].institute = event.target.value;
+      setFormData({ ...formData, educations: newEducation });
+      localStorage.setItem(
+        "formData",
+        JSON.stringify({ ...formData, educations: newEducation })
+      );
+    } else if (input === "degree_id") {
+      newEducation[index].degree_id = event.target.value;
+      setFormData({ ...formData, educations: newEducation });
+      localStorage.setItem(
+        "formData",
+        JSON.stringify({ ...formData, educations: newEducation })
+      );
+    } else if (input === "due_date") {
+      newEducation[index].due_date = event.target.value;
+      setFormData({ ...formData, educations: newEducation });
+      localStorage.setItem(
+        "formData",
+        JSON.stringify({ ...formData, educations: newEducation })
+      );
+    } else if (input === "description") {
+      newEducation[index].description = event.target.value;
+      setFormData({ ...formData, educations: newEducation });
+      localStorage.setItem(
+        "formData",
+        JSON.stringify({ ...formData, educations: newEducation })
+      );
+    }
   };
 
- let storedSchool = localStorage.getItem("school");
- let storedDegree = localStorage.getItem("degree");
- let storedEndDate = localStorage.getItem("enddate");
- let storedDescription = localStorage.getItem("description");
+  let storedInstitute = localStorage.getItem("institute");
+  let storedDegree = localStorage.getItem("degree_id");
+  let storedEndDate = localStorage.getItem("enddate");
+  let storedDescription = localStorage.getItem("description");
   useEffect(() => {
-    storedSchool = localStorage.getItem("school");
-    storedDegree = localStorage.getItem("degree");
+    storedInstitute = localStorage.getItem("institute");
+    storedDegree = localStorage.getItem("degree_id");
     storedEndDate = localStorage.getItem("enddate");
     storedDescription = localStorage.getItem("description");
-    setValue("school", storedSchool);
-    setValue("degree", storedDegree);
+    setValue("institute", storedInstitute);
+    setValue("degree_id", storedDegree);
     setValue("enddate", storedEndDate);
     setValue("description", storedDescription);
   }, []);
+
+  
+
+
+
+
 
   useEffect(() => {
     let getData = async () => {
@@ -85,15 +126,53 @@ export default function Education() {
     };
 
     getData();
-    
   }, []);
 
+  function dataURLtoFile(dataurl, filename) {
+    var arr = dataurl.split(","),
+      mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]),
+      n = bstr.length,
+      u8arr = new Uint8Array(n);
+
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+
+    return new File([u8arr], filename, { type: mime });
+  }
+
+
+
   const handleClick = () => {
+    let file = dataURLtoFile(formData.image, "image-name.png");
     trigger();
+
+    axios.post( 'https://resume.redberryinternship.ge/api', formData)
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+
   };
-  console.log(degree1);
 
   
+  const handleAdd = () =>{
+    let newEducation = formData.educations
+    newEducation.push({
+      institute: "",
+      degree_id: "",
+      due_date: "",
+      description: "",
+    })
+    setFormData({...formData, educations: newEducation})
+    localStorage.setItem("formData", JSON.stringify(formData))
+
+    console.log(formData.educations)
+  }
+
   return (
     <Main>
       <Edu>
@@ -111,116 +190,147 @@ export default function Education() {
         </Header>
         <Line />
         <form onSubmit={handleSubmit(onSubmit)}>
-          <School>
-            <label style={errors.school && { color: "#E52F2F" }}>
-              სასწავლებელი
-            </label>
-            <input
-              className={
-                errors.school === undefined &&
-                getValues("school") !== undefined &&
-                getValues("school") !== ""
-                  ? "school valid"
-                  : "school"
-              }
-              type="text"
-              placeholder="სასწავლებელი"
-              {...register("school", {
-                minLength: { value: 2, message: "errors" },
-                required: true,
-              })}
-              onChange={(e) => {
-                handleChange(e, "school");
-                setSchool(true)
-              }}
-              style={school == true ? errors.school && { border: "1px solid   #EF5050" } : { border: "1px solid  #BCBCBC" }}
-            />
-            {errors.school && <Img src={invalid} />}
-            {school == true ? errors.school === undefined &&
-              getValues("school") !== undefined &&
-              getValues("school") !== "" && <Img src={valid} /> : null}
-            <span>მინიმუმ 2 სიმბოლო</span>
-          </School>
-          <Quality>
-            <SelectBox>
-              <label style={errors.degree && { color: "#E52F2F" }}>
-                ხარისხი
-              </label>
-              <select
-              value={storedDegree || "აირჩიეთ ხარისხი"}
-                {...register("degree", { required: true })}
-                onChange={(e) => {
-                  handleChange(e, "degree");
-                  setDegree(true)
-                }}
-                className={
-                  errors.degree === undefined &&
-                  getValues("degree") !== undefined &&
-                  getValues("degree") !== ""
-                    ? "degree  valid"
-                    : "degree"
-                }
-                style={degree == true ? errors.degree && { border: "1px solid   #EF5050" } : { border: "1px solid  #BCBCBC" }}
-              >
-                <option disabled hidden>
-                აირჩიეთ ხარისხი
-              </option>
-                <option>{degree1}</option>
-                <option>{degree2}</option>
-                <option>{degree3}</option>
-                <option>{degree4}</option>
-                <option>{degree5}</option>
-                <option>{degree6}</option>
-                <option>{degree7}</option>
-                <option>{degree8}</option>
-                <option>{degree9}</option>
-              </select>
-            </SelectBox>
-            <DateBox>
-              <label style={errors.enddate && { color: "#E52F2F" }}>
-                დამთავრების რიცხვი
-              </label>
-              <input
-                type="date"
-                className={
-                  errors.enddate === undefined &&
-                  getValues("enddate") !== undefined &&
-                  getValues("enddate") !== ""
-                    ? "date valid"
-                    : "date"
-                }
-                {...register("enddate", { required: true })}
-                onChange={(e) => {
-                  handleChange(e, "enddate");
-                  setEndDate(true)
-                }}
-                style={endDate == true ? errors.enddate && { border: "1px solid   #EF5050" } : { border: "1px solid  #BCBCBC" }}
-              />
-            </DateBox>
-          </Quality>
-          <Description>
-            <label style={errors.description && { color: "#E52F2F" }}>
-              აღწერა
-            </label>
-            <textarea
-              className={
-                errors.description === undefined &&
-                getValues("description") !== undefined &&
-                getValues("description") !== ""
-                  ? "description-text valid"
-                  : "description-text"
-              }
-              placeholder="როლი თანამდებობაზე და ზოგადი აღწერა"
-              {...register("description", { required: true })}
-               onChange={(e) => {
-                handleChange(e, "description");
-                setDescription(true)
-              }}
-              style={ description == true ? errors.description && { border: "1px solid   #EF5050" }: { border: "1px solid  #BCBCBC" }}
-            ></textarea>
-          </Description>
-          <Line2 />
-          <button className="add">სხვა სასწავლებლის დამატება</button>
+          {formData.educations.map((education, index) => {
+            return (
+              <div key={index}>
+                <School>
+                  <label style={errors.institute && { color: "#E52F2F" }}>
+                    სასწავლებელი
+                  </label>
+                  <input
+                    className={
+                      errors.institute === undefined &&
+                      getValues("institute") !== undefined &&
+                      getValues("institute") !== ""
+                        ? "school valid"
+                        : "school"
+                    }
+                    type="text"
+                    placeholder="სასწავლებელი"
+                    {...register(`institute${index}`, {
+                      minLength: { value: 2, message: "errors" },
+                      required: true,
+                    })}
+                    value={formData.educations[index].institute}
+                    onChange={(e) => {
+                      handleChange(e, "institute", index);
+                      setInstitute(true);
+                    }}
+                    style={
+                      institute == true
+                        ? errors.institute && { border: "1px solid   #EF5050" }
+                        : { border: "1px solid  #BCBCBC" }
+                    }
+                  />
+                  {errors.institute && <Img src={invalid} />}
+                  {institute == true
+                    ? errors.school === undefined &&
+                      getValues("institute") !== undefined &&
+                      getValues("institute") !== "" && <Img src={valid} />
+                    : null}
+                  <span>მინიმუმ 2 სიმბოლო</span>
+                </School>
+                <Quality>
+                  <SelectBox>
+                    <label style={errors.degree_id && { color: "#E52F2F" }}>
+                      ხარისხი
+                    </label>
+                    <select
+                      {...register(`degree_id${index}`, { required: true })}
+                      onChange={(e) => {
+                        handleChange(e, "degree_id", index);
+                        setDegree(true);
+                      }}
+                      value={formData.educations[index].degree_id || "აირჩიეთ ხარისხი"}
+                      className={
+                        errors.degree_id === undefined &&
+                        getValues("degree_id") !== undefined &&
+                        getValues("degree_id") !== ""
+                          ? "degree  valid"
+                          : "degree"
+                      }
+                      style={
+                        degree == true
+                          ? errors.degree_id && {
+                              border: "1px solid   #EF5050",
+                            }
+                          : { border: "1px solid  #BCBCBC" }
+                      }
+                    >
+                      <option disabled hidden>
+                        აირჩიეთ ხარისხი
+                      </option>
+                      <option>{degree1}</option>
+                      <option>{degree2}</option>
+                      <option>{degree3}</option>
+                      <option>{degree4}</option>
+                      <option>{degree5}</option>
+                      <option>{degree6}</option>
+                      <option>{degree7}</option>
+                      <option>{degree8}</option>
+                      <option>{degree9}</option>
+                    </select>
+                  </SelectBox>
+                  <DateBox>
+                    <label style={errors.enddate && { color: "#E52F2F" }}>
+                      დამთავრების რიცხვი
+                    </label>
+                    <input
+                      type="date"
+                      className={
+                        errors.due_date === undefined &&
+                        getValues("due_date") !== undefined &&
+                        getValues("due_date") !== ""
+                          ? "date valid"
+                          : "date"
+                      }
+                      {...register(`due_date${index}`, { required: true })}
+                      value={formData.educations[index].due_date}
+                      onChange={(e) => {
+                        handleChange(e, "due_date", index);
+                        setDueDate(true);
+                      }}
+                      style={
+                        dueDate == true
+                          ? errors.due_date && { border: "1px solid   #EF5050" }
+                          : { border: "1px solid  #BCBCBC" }
+                      }
+                    />
+                  </DateBox>
+                </Quality>
+                <Description>
+                  <label style={errors.description && { color: "#E52F2F" }}>
+                    აღწერა
+                  </label>
+                  <textarea
+                    className={
+                      errors.description === undefined &&
+                      getValues("description") !== undefined &&
+                      getValues("description") !== ""
+                        ? "description-text valid"
+                        : "description-text"
+                    }
+                    placeholder="როლი თანამდებობაზე და ზოგადი აღწერა"
+                    {...register(`description${index}`, { required: true })}
+                    value={formData.educations[index].description}
+                    onChange={(e) => {
+                      handleChange(e, "description", index);
+                      setDescription(true);
+                    }}
+                    style={
+                      description == true
+                        ? errors.description && {
+                            border: "1px solid   #EF5050",
+                          }
+                        : { border: "1px solid  #BCBCBC" }
+                    }
+                  ></textarea>
+                </Description>
+                <Line2 />
+              </div>
+            );
+          })}
+          <button onClick={handleAdd} className="add">სხვა სასწავლებლის დამატება</button>
           <div className="BtnBox1">
             <button className="Btnback">
               <Link
@@ -236,26 +346,6 @@ export default function Education() {
           </div>
         </form>
       </Edu>
-      <div className="result">
-        <div>
-          <h1>
-            {getValues("name")} {getValues("surname")}
-          </h1>
-          <span>
-            <img src={email} />
-            {getValues("email")}
-          </span>
-          <p>
-            <img src={phone} />
-            {getValues("phone")}
-          </p>
-          <h3>ჩემს შესახებ</h3>
-          <p>
-            ძალიან მიყვარს დიზაინის კეთება. დილით ადრე რომ ავდგები
-            გამამხნევებელი ვარჯიშების მაგიერ დიზაინს ვაკეთებ.
-          </p>
-        </div>
-      </div>
     </Main>
   );
 }
@@ -269,7 +359,7 @@ const Main = styled.div`
 const Edu = styled.div`
   width: 1098px;
   height: 1080px;
- 
+
   background-color: #f9f9f9;
 `;
 
@@ -325,7 +415,7 @@ const School = styled.div`
   flex-direction: column;
   margin-left: 126px;
   margin-top: 77px;
- 
+
   gap: 8px;
   position: relative;
 `;
@@ -339,7 +429,7 @@ const Img = styled.img`
 const Quality = styled.div`
   display: flex;
   flex-direction: row;
-  
+
   margin-top: 40px;
   width: 80%;
   margin-left: 126px;
@@ -347,12 +437,10 @@ const Quality = styled.div`
 const SelectBox = styled.div`
   width: 419px;
   height: 125px;
- 
 `;
 const DateBox = styled.div`
   width: 419px;
   height: 125px;
- 
 `;
 const Description = styled.div`
   width: 846px;
